@@ -71,5 +71,60 @@ namespace mf_dev_backend.Controllers
 
             return View();
         }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null) // Se o ID for nulo
+            {
+                return NotFound(); // ID não encontrado
+            }
+
+            var dados = await _context.Veiculos.FindAsync(id);
+
+            if (dados == null) // Se o ID for nulo
+            {
+                return NotFound(); // ID não encontrado
+            }
+
+            return View(dados);
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) // Se o ID for nulo
+            {
+                return NotFound(); // ID não encontrado
+            }
+
+            var dados = await _context.Veiculos.FindAsync(id);
+
+            if (dados == null) // Se o ID for nulo
+            {
+                return NotFound(); // ID não encontrado
+            }
+
+            return View(dados);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            if (id == null) // Se o ID for nulo
+            {
+                return NotFound(); // ID não encontrado
+            }
+
+            var dados = await _context.Veiculos.FindAsync(id);
+
+            if (dados == null) // Se o ID for nulo
+            {
+                return NotFound(); // ID não encontrado
+            }
+
+            _context.Veiculos.Remove(dados);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
     }
 }
