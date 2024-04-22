@@ -19,7 +19,7 @@ namespace mf_dev_backend.Controllers
             return View(dados); //Exibindo os dados
         }
 
-        public IActionResult Create() //Get (Cria post)
+        public IActionResult Create() //Get (Adiciona Veiculo)
         {
             return View();
         }
@@ -34,6 +34,42 @@ namespace mf_dev_backend.Controllers
                 return RedirectToAction("Index"); //Retorna pra minha tela de Index (listagem de veiculos)
             }
             return View(veiculo);
+        }
+
+        public async Task<IActionResult> Edit(int? id) //Get (Edita Veiculo)
+        {
+            if(id == null) // Se o ID for nulo
+            {
+                return NotFound(); // ID não encontrado
+            }
+
+            var dados = await _context.Veiculos.FindAsync(id);
+
+            if(dados == null)
+            {
+                return NotFound();
+            }
+            return View(dados);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Veiculo veiculo) //Setter (Edita Veiculo)
+        {
+
+            if (id != veiculo.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid) //Se o modelo de dados for válido
+            {
+                _context.Veiculos.Update(veiculo); //Faz um update
+                await _context.SaveChangesAsync(); //Salvar no banco
+                return RedirectToAction("Index"); //Retorna pra minha tela de Index (listagem de veiculos)
+            }
+
+
+            return View();
         }
     }
 }
